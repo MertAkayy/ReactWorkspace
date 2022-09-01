@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+.title_div{
+  height: 100px;
+  width: 100%;
+  background-color: #e6e6e6;
+  text-align:center;
+  display: table;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.title{
+  margin-left: 43%;
+}
