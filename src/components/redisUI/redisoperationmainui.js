@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./redisops.css";
 import axios from "axios";
 
-function redisops() {
+function Redisops() {
+  const [personel_docs, setPersonel_docs] = useState([]);
+
   const connectRedisDB = () => {
     console.log("click");
     axios
@@ -12,6 +14,13 @@ function redisops() {
         console.log("Hata" + error);
       }, []);
   };
+  const TableRow = ({ item, column }) => (
+    <tr>
+      {column.map((columnItem, index) => {
+        return <td>{item[columnItem.value]}</td>;
+      })}
+    </tr>
+  );
   const setValue = () => {
     let currentKeyValuepair = {
       key: document.getElementById("Key").value,
@@ -19,29 +28,70 @@ function redisops() {
     };
     axios.post("http://localhost:5000/redis/addkeyredis", currentKeyValuepair);
   };
+  const getValue = () => {
+    axios
+      .get("http://localhost:5000/redis/getallpersons")
+      .then((Response) => {
+        console.log(Response.data);
+        setPersonel_docs(Response.data.persons);
+      })
+      .catch((error) => {
+        console.log("Hata" + error);
+      }, []);
+    const TableRow = ({ item, column }) => (
+      <tr>
+        {column.map((columnItem, index) => {
+          return <td>{item[columnItem.value]}</td>;
+        })}
+      </tr>
+    );
+  };
+  const column = [
+    { heading: "İsim", value: "name", unique: "false" },
+    { heading: "Soyisim", value: "surname", unique: "false" },
+    { heading: "TC No", value: "tcno", unique: "false" },
+    { heading: "Sicil No", value: "regno", unique: "false" },
+    { heading: "Rütbe", value: "rank", unique: "false" },
+  ];
   return (
-    <div>
+    <div id="main_div">
       <button className="connect_Redis_Button" onClick={connectRedisDB}>
         {" "}
         Connect Redis Server
       </button>
-      <input
-        pattern="[A-Za-z]{3}"
-        id="Key"
-        type="text"
-        placeholder="Enter Key....."
-      ></input>
-      <input
-        pattern="[A-Za-z]{3}"
-        id="Value"
-        type="text"
-        placeholder="Enter Value....."
-      ></input>
-      <button className="connect_Redis_Button" onClick={setValue}>
+
+      <button className="connect_Redis_Button" onClick={getValue}>
         {" "}
-        Set Value
+        Get All Persons
+      </button>
+
+      <table>
+        <thead>
+          <th> İsim</th>
+          <th> Soyisim</th>
+          <th> TC No</th>
+          <th> Sicil No</th>
+          <th> Rütbe</th>
+        </thead>
+        <tbody>
+          {personel_docs.map((item, index) => (
+            <TableRow item={item} column={column} />
+          ))}
+        </tbody>
+      </table>
+      <button className="Add_Redis_Button" onClick={getValue}>
+        {" "}
+        Insert Person
+      </button>
+      <button className="Delete_Redis_Button" onClick={getValue}>
+        {" "}
+        Delete Person
+      </button>
+      <button className="Update_Redis_Button" onClick={getValue}>
+        {" "}
+        Update Person
       </button>
     </div>
   );
 }
-export default redisops;
+export default Redisops;

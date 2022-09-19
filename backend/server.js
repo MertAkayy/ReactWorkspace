@@ -18,7 +18,7 @@ app.use(cors());
 const PORT = process.env.PORT | 5000;
 
 app.use("/api/pistols", pistolrouter);
-app.use("/redis/", redisrouter);
+app.use("/redis", redisrouter);
 app.listen(PORT, () => {
   console.log(`Server running... at port ${PORT}`);
 });

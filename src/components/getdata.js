@@ -10,10 +10,10 @@ function Pistols() {
   const [pistolAddtriggered, setpistolAddtriggered] = useState(false);
   const [pistolDeletetriggered, setpistolDeletetriggered] = useState(false);
   const [pistolUpdatetriggered, setpistolUpdatetriggered] = useState(false);
+
   const getPistols = () => {
-    console.log("click");
     axios
-      .get("http://localhost:5000/api/pistols/connectredis")
+      .get("http://localhost:5000/api/pistols")
       .then((Response) => {
         setPistols_docs(Response.data);
       })
